@@ -1,0 +1,53 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- Button Default -->
+    <style name="ButtonDefault" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">@color/WhiteNormal</item>
+        <item name="colorButtonNormal">@color/DefaultNormal</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+    <!-- Button Primary -->
+    <style name="ButtonPrimary" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">@color/WhiteNormal</item>
+        <item name="colorButtonNormal">@color/PrimaryNormal</item>
+        <item name="android:textColor">@color/WhiteNormal</item>
+    </style>
+    <!-- Button Info -->
+    <style name="ButtonInfo" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">@color/WhiteNormal</item>
+        <item name="colorButtonNormal">@color/InfoNormal</item>
+        <item name="android:textColor">@color/WhiteNormal</item>
+    </style>
+    <!-- Button Success -->
+    <style name="ButtonSuccess" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">@color/WhiteNormal</item>
+        <item name="colorButtonNormal">@color/SuccessNormal</item>
+        <item name="android:textColor">@color/WhiteNormal</item>
+    </style>
+    <!-- Button Warning -->
+    <style name="ButtonWarning" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">@color/WhiteNormal</item>
+        <item name="colorButtonNormal">@color/WarningNormal</item>
+        <item name="android:textColor">@color/WhiteNormal</item>
+    </style>
+    <!-- Button Danger -->
+    <style name="ButtonDanger" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">@color/WhiteNormal</item>
+        <item name="colorButtonNormal">@color/DangerNormal</item>
+        <item name="android:textColor">@color/WhiteNormal</item>
+    </style>
+    <!-- Button Accent -->
+    <style name="ButtonAccent" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">@color/WhiteNormal</item>
+        <item name="colorButtonNormal">@color/AccentNormal</item>
+        <item name="android:textColor">@color/WhiteNormal</item>
+    </style>
+</resources>
