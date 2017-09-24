@@ -51,7 +51,7 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
     private Location mLocation;
     double latitude, longitude;
     private LocationRequest mLocationRequest;
-
+    private String address;
     private ImageButton imgBtnReporte;
     private Integer REQUEST_CAMERA = 100, SELECT_FILE = 0;
 
@@ -104,7 +104,7 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         if (view == btnGuardarReporte)
         {
-            msg("Guardar reporte");
+            msg("Guardar reporte");// + address);
         }
         if (view == btnCancelarReporte)
         {
@@ -139,7 +139,7 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
         mMap = googleMap;
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(latitude, longitude);
-        String address = getAddress(getApplicationContext(), latitude, longitude);
+        address = getAddress(getApplicationContext(), latitude, longitude);
 
         mMap.addMarker(new MarkerOptions().position(sydney).title(address));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15));
@@ -290,11 +290,10 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
             public void onClick(DialogInterface dialogInterface, int i) {
                 switch (i) {
                     case 0:
-                        if (ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                            try {
-                                //cameraManager.openCamera(idCamera, CameraManager.AvailabilityCallback, null);
-                            }catch (Exception e){ e.printStackTrace();}
-                        }
+                        try {
+                            Intent inteCapture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(inteCapture, REQUEST_CAMERA);
+                        }catch (Exception e){ e.printStackTrace();}
                         break;
                     case 1:
                         Intent inteImage = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -318,7 +317,7 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
             if (requestCode == REQUEST_CAMERA)
             {
                 Bundle bundle = data.getExtras();
-                final Bitmap bmp = (Bitmap) bundle.get("data");
+                Bitmap bmp = (Bitmap) bundle.get("data");
                 imgBtnReporte.setImageBitmap(bmp);
             }
             else if (requestCode == SELECT_FILE)

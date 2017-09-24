@@ -38,13 +38,19 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <ImageButton
-            android:id="@+id/imgBtnReporte"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/ic_add_a_photo"
-            android:theme="@style/ButtonDefault"/>
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/imgBtnReporte"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_add_a_photo"/>
+
+        </android.support.design.widget.TextInputLayout>
+
 
         <LinearLayout
             android:id="@+id/area_btn"
