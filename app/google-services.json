@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "278812552280",
+    "firebase_url": "https://ejemplo-firebase-bd2bb.firebaseio.com",
+    "project_id": "ejemplo-firebase-bd2bb",
+    "storage_bucket": "ejemplo-firebase-bd2bb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:278812552280:android:04de46bcc601509b",
+        "android_client_info": {
+          "package_name": "com.example.alexander.ejemplofirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "278812552280-3fjl752r9lv94mvsjrjl9m5ia44l243f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.alexander.ejemplofirebase",
+            "certificate_hash": "c1fa61d001b6a5ba053cdc6b0900f78cbb0a0a69"
+          }
+        },
+        {
+          "client_id": "278812552280-oe701kgju495ff9ei47hglpg77kb8scf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAAsA1yCBKLGnpp_c-fJcFWJqx7kdJO-E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "278812552280-oe701kgju495ff9ei47hglpg77kb8scf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:278812552280:android:392df7b3cffb7e8a",
+        "android_client_info": {
+          "package_name": "com.example.alexander.reportecalle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "278812552280-vgk6gecnup4pcilget0elmdj94ivrb4l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.alexander.reportecalle",
+            "certificate_hash": "c1fa61d001b6a5ba053cdc6b0900f78cbb0a0a69"
+          }
+        },
+        {
+          "client_id": "278812552280-oe701kgju495ff9ei47hglpg77kb8scf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAAsA1yCBKLGnpp_c-fJcFWJqx7kdJO-E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "278812552280-oe701kgju495ff9ei47hglpg77kb8scf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

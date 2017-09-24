@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorDefault">#bdc1c9</color>
+    <color name="colorPrimary">#9e9e9e</color>
+    <color name="colorPrimaryDark">#616161</color>
+    <color name="colorAccent">#212121</color>
+
+    <color name="DefaultNormal">#E6E6E6</color>
+    <color name="PrimaryNormal">#337AB7</color>
+    <color name="InfoNormal">#5BC0DE</color>
+    <color name="SuccessNormal">#5CB852</color>
+    <color name="WarningNormal">#F0AD4E</color>
+    <color name="DangerNormal">#D9534F</color>
+    <color name="AccentNormal">#FF4081</color>
+    <color name="WhiteNormal">#FFF</color>
+
+</resources>
