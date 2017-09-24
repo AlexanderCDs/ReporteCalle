@@ -1,11 +1,20 @@
 package com.example.alexander.reportecalle;
 
+import android.*;
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -14,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -41,6 +51,9 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
     private Location mLocation;
     double latitude, longitude;
     private LocationRequest mLocationRequest;
+
+    private ImageButton imgBtnReporte;
+    private Integer REQUEST_CAMERA = 100, SELECT_FILE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,9 +93,11 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
 
         btnGuardarReporte = (Button) findViewById(R.id.btnGuardarReportar);
         btnCancelarReporte = (Button) findViewById(R.id.btnCancelarReporte);
+        imgBtnReporte = (ImageButton) findViewById(R.id.imgBtnReporte);
 
         btnGuardarReporte.setOnClickListener(this);
         btnCancelarReporte.setOnClickListener(this);
+        imgBtnReporte.setOnClickListener(this);
     }
 
     @Override
@@ -95,6 +110,10 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
         {
             msg("Cancelar reporte");
             finish();
+        }
+        if (view == imgBtnReporte)
+        {
+            selectImage();
         }
     }
 
@@ -259,8 +278,55 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
     }
 
     @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
+    public void onPointerCaptureChanged(boolean hasCapture) { }
 
+    private void selectImage() {
+        final CharSequence[] items = {"Camara", "Galeria", "Cancelar"};
+        final AlertDialog.Builder builder = new AlertDialog.Builder(GenerateActivity.this);
+        builder.setTitle("Agregar imagen");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @TargetApi(21)
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch (i) {
+                    case 0:
+                        if (ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                            try {
+                                //cameraManager.openCamera(idCamera, CameraManager.AvailabilityCallback, null);
+                            }catch (Exception e){ e.printStackTrace();}
+                        }
+                        break;
+                    case 1:
+                        Intent inteImage = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        inteImage.setType("image/*");
+                        startActivityForResult(inteImage.createChooser(inteImage,"Seleccione una imagen"), SELECT_FILE);
+                        break;
+                    case 2:
+                        dialogInterface.dismiss();
+                        break;
+                }
+            }
+        });
+        builder.show();
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK)
+        {
+            if (requestCode == REQUEST_CAMERA)
+            {
+                Bundle bundle = data.getExtras();
+                final Bitmap bmp = (Bitmap) bundle.get("data");
+                imgBtnReporte.setImageBitmap(bmp);
+            }
+            else if (requestCode == SELECT_FILE)
+            {
+                Uri selectedImage = data.getData();
+                imgBtnReporte.setImageURI(selectedImage);
+            }
+        }
     }
 }
 
