@@ -1,6 +1,5 @@
 package com.example.alexander.reportecalle;
 
-import android.*;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -23,7 +22,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -36,6 +37,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 
 import java.io.IOException;
 import java.util.List;
@@ -43,8 +47,12 @@ import java.util.Locale;
 
 public class GenerateActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener
 {
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
+    private EditText edtComentario;
     private Button btnGuardarReporte, btnCancelarReporte;
+    private ImageButton imgBtnReporte;
     private GoogleMap mMap;
     SupportMapFragment mapFragment;
     private GoogleApiClient mGoogleApiClient;
@@ -52,8 +60,10 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
     double latitude, longitude;
     private LocationRequest mLocationRequest;
     private String address;
-    private ImageButton imgBtnReporte;
+
     private Integer REQUEST_CAMERA = 100, SELECT_FILE = 0;
+
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +81,27 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
 
     public void inicializar ()
     {
+        try
+        {
+            mAuth = FirebaseAuth.getInstance();
+
+            mAuthListener = new FirebaseAuth.AuthStateListener() {
+                @Override
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    if (user == null)
+                    {
+                        finish();
+                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    }
+                }
+            };
+
+            FirebaseUser user = mAuth.getCurrentUser();
+        }catch (ExceptionInInitializerError error) {
+            finish();
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        }
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
         int Permission_All = 1;
@@ -91,6 +122,7 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
                     .build();
         }
 
+        edtComentario = (EditText) findViewById(R.id.idtComentario_reporte);
         btnGuardarReporte = (Button) findViewById(R.id.btnGuardarReportar);
         btnCancelarReporte = (Button) findViewById(R.id.btnCancelarReporte);
         imgBtnReporte = (ImageButton) findViewById(R.id.imgBtnReporte);
@@ -104,11 +136,11 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         if (view == btnGuardarReporte)
         {
-            msg("Guardar reporte");// + address);
+            guardarInformacion();
         }
         if (view == btnCancelarReporte)
         {
-            msg("Cancelar reporte");
+            msg("Cancelado");
             finish();
         }
         if (view == imgBtnReporte)
@@ -117,6 +149,29 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    private void guardarInformacion()
+    {
+        try
+        {
+            String direccion = address;
+            String comentario = edtComentario.getText().toString();
+            //AGREGAR IMAGEN A LA BASE DE DATOS
+            String imagen = "Imagen texto de prueba";
+
+            ReportInformation reportInformation = new ReportInformation(direccion, comentario, imagen);
+
+            FirebaseUser user = mAuth.getCurrentUser();
+
+            databaseReference.child(user.getUid()).setValue(reportInformation);
+
+            msg("Reporte guardado");
+        }
+        catch (Exception e)
+        {
+            msg("Surgio un error inesperado");
+        }
+
+    }
     public void msg (String msg)
     {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();

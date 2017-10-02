@@ -47,19 +47,25 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     public void inicializar()
     {
-        mAuth = FirebaseAuth.getInstance();
+        try
+        {
+            mAuth = FirebaseAuth.getInstance();
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user == null)
-                {
-                    finish();
-                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            mAuthListener = new FirebaseAuth.AuthStateListener() {
+                @Override
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    if (user == null)
+                    {
+                        finish();
+                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    }
                 }
-            }
-        };
+            };
+        }catch (ExceptionInInitializerError error) {
+            finish();
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        }
 
         edtName = (EditText) findViewById(R.id.edtFirstName);
         edtEmail = (EditText) findViewById(R.id.edtEmailProfile);

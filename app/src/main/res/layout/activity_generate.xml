@@ -28,13 +28,14 @@
             android:textColorHint="#FFF">
 
             <EditText
-            android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:inputType="textMultiLine"
-            android:maxLines="5"
-            android:scrollbars="vertical"
-            android:hint="@string/txt_trata_reporte"
-            android:ems="100"/>
+                android:id="@+id/idtComentario_reporte"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:inputType="textMultiLine"
+                android:maxLines="5"
+                android:scrollbars="vertical"
+                android:hint="@string/txt_trata_reporte"
+                android:ems="100"/>
 
         </android.support.design.widget.TextInputLayout>
 
