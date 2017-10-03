@@ -1,7 +1,5 @@
 package com.example.alexander.reportecalle;
 
-import android.media.Image;
-
 /**
  * Created by Alexander on 2/10/2017.
  */

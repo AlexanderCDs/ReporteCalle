@@ -39,13 +39,17 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class GenerateActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener
+public class GenerateActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener, OnMapReadyCallback,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener
 {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -62,8 +66,6 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
     private String address;
 
     private Integer REQUEST_CAMERA = 100, SELECT_FILE = 0;
-
-    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,8 +98,6 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
                     }
                 }
             };
-
-            FirebaseUser user = mAuth.getCurrentUser();
         }catch (ExceptionInInitializerError error) {
             finish();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -130,6 +130,7 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
         btnGuardarReporte.setOnClickListener(this);
         btnCancelarReporte.setOnClickListener(this);
         imgBtnReporte.setOnClickListener(this);
+        imgBtnReporte.setOnLongClickListener(this);
     }
 
     @Override
@@ -137,6 +138,7 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
         if (view == btnGuardarReporte)
         {
             guardarInformacion();
+            finish();
         }
         if (view == btnCancelarReporte)
         {
@@ -149,28 +151,27 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    @Override
+    public boolean onLongClick(View view)
+    {
+        if (view == imgBtnReporte)
+        {
+            imgBtnReporte.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_a_photo));
+            return true;
+        }
+        return false;
+    }
+
     private void guardarInformacion()
     {
-        try
-        {
-            String direccion = address;
-            String comentario = edtComentario.getText().toString();
-            //AGREGAR IMAGEN A LA BASE DE DATOS
-            String imagen = "Imagen texto de prueba";
 
-            ReportInformation reportInformation = new ReportInformation(direccion, comentario, imagen);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference reportesReference = database.getReference("basedatos");
 
-            FirebaseUser user = mAuth.getCurrentUser();
+        ReportInformation rinformation = new ReportInformation(address, edtComentario.getText().toString(), "imagen.jpg");
+        reportesReference.child("reporte").push().setValue(rinformation);
 
-            databaseReference.child(user.getUid()).setValue(reportInformation);
-
-            msg("Reporte guardado");
-        }
-        catch (Exception e)
-        {
-            msg("Surgio un error inesperado");
-        }
-
+        msg("¡Acción exitosa!");
     }
     public void msg (String msg)
     {
