@@ -37,5 +37,6 @@
     <string name="txt_actualizando">Actualizando...</string>
     <string name="title_activity_maps">Map</string>
     <string name="txt_mi_ubicacion">Mi ubicación</string>
+    <string name="txt_msg_pendiente">Pendiente</string>
 
 </resources>

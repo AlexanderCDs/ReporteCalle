@@ -166,9 +166,10 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
     {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
         final DatabaseReference reportesReference = database.getReference("basedatos");
 
-        ReportInformation rinformation = new ReportInformation(address, edtComentario.getText().toString(), "imagen.jpg");
+        ReportInformation rinformation = new ReportInformation(user.getEmail(), address, edtComentario.getText().toString(), "imagen.jpg", getResources().getString(R.string.txt_msg_pendiente));
         reportesReference.child("reporte").push().setValue(rinformation);
 
         msg("¡Acción exitosa!");
