@@ -3,6 +3,7 @@ package com.example.alexander.reportecalle;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,7 +25,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -37,13 +37,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.util.List;
@@ -63,7 +64,11 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
     private Location mLocation;
     double latitude, longitude;
     private LocationRequest mLocationRequest;
-    private String address;
+    private String address, photo;
+    private Uri selectedImage;
+    private StorageReference storage;
+
+    private ProgressDialog pDialog;
 
     private Integer REQUEST_CAMERA = 100, SELECT_FILE = 0;
 
@@ -122,6 +127,7 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
                     .build();
         }
 
+        storage = FirebaseStorage.getInstance().getReference();
         edtComentario = (EditText) findViewById(R.id.idtComentario_reporte);
         btnGuardarReporte = (Button) findViewById(R.id.btnGuardarReportar);
         btnCancelarReporte = (Button) findViewById(R.id.btnCancelarReporte);
@@ -164,15 +170,20 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
 
     private void guardarInformacion()
     {
-
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         final DatabaseReference reportesReference = database.getReference("basedatos");
 
-        ReportInformation rinformation = new ReportInformation(user.getEmail(), address, edtComentario.getText().toString(), "imagen.jpg", getResources().getString(R.string.txt_msg_pendiente));
+        ReportInformation rinformation = new ReportInformation(user.getEmail(), address, edtComentario.getText().toString(), photo, getResources().getString(R.string.txt_msg_pendiente));
         reportesReference.child("reporte").push().setValue(rinformation);
 
-        msg("¡Acción exitosa!");
+        StorageReference fillPath = storage.child("reporte").child("foto").child(photo);
+        fillPath.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                msg("Acción exitosa");
+            }
+        });
     }
     public void msg (String msg)
     {
@@ -200,7 +211,6 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
 
         mMap.addMarker(new MarkerOptions().position(sydney).title(address));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15));
-        //mMap.setMinZoomPreference(6.0f);
     }
 
     public String getAddress(Context context, Double latitude, Double longitude)
@@ -214,10 +224,6 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
             {
                 Address address = addresses.get(0);
                 fullAddress = address.getAddressLine(0);
-
-                /*String Location = address.getLocality();
-                String Zip = address.getPostalCode();
-                String Country = address.getCountryName();*/
             }
         }catch (IOException ex) { ex.printStackTrace(); }
 
@@ -379,8 +385,9 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
             }
             else if (requestCode == SELECT_FILE)
             {
-                Uri selectedImage = data.getData();
+                selectedImage = data.getData();
                 imgBtnReporte.setImageURI(selectedImage);
+                photo = selectedImage.getLastPathSegment();
             }
         }
     }
