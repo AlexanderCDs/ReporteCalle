@@ -181,7 +181,7 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
         fillPath.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                msg("Acción exitosa");
+                msg("Acción exitosa. ¡Datos guardados!");
             }
         });
     }
