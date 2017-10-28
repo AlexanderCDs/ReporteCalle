@@ -21,6 +21,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -173,8 +174,13 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         final DatabaseReference reportesReference = database.getReference("basedatos");
+        Time hoy = new Time(Time.getCurrentTimezone());
+        hoy.setToNow();
+        String fecha = ((hoy.monthDay < 10) ? "0" + hoy.monthDay : hoy.monthDay)+ "/" + (((hoy.month+1) < 10) ? "0" + (hoy.month+1) : (hoy.month+1)) + "/" + hoy.year;
+        String hora = ((hoy.hour < 10) ? "0" + hoy.hour : hoy.hour)+ ":" + ((hoy.minute < 10) ? "0" + hoy.minute : hoy.minute) + ":" + ((hoy.second < 10) ? hoy.second + "0" : hoy.second);
 
-        ReportInformation rinformation = new ReportInformation(user.getEmail(), address, edtComentario.getText().toString(), photo, getResources().getString(R.string.txt_msg_pendiente));
+
+        ReportInformation rinformation = new ReportInformation(user.getEmail(), address.trim(), edtComentario.getText().toString().trim(), photo, getResources().getString(R.string.txt_msg_pendiente), fecha, hora);
         reportesReference.child("reporte").push().setValue(rinformation);
 
         StorageReference fillPath = storage.child("reporte").child("foto").child(photo);

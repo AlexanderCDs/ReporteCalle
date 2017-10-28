@@ -11,17 +11,27 @@ public class ReportInformation
     public String comentario;
     public String image;
     public String estado;
+    public String fecha;
+    public String hora;
 
     public ReportInformation()
     {
-
+        this.correo = "";
+        this.direccion = "";
+        this.comentario = "";
+        this.image = "";
+        this.estado = "";
+        this.fecha = "";
+        this.hora = "";
     }
 
-    public ReportInformation(String correo, String direccion, String comentario, String image, String estado) {
+    public ReportInformation(String correo, String direccion, String comentario, String image, String estado, String fecha, String hora) {
         this.correo = correo;
         this.direccion = direccion;
         this.comentario = comentario;
         this.image = image;
         this.estado = estado;
+        this.fecha = fecha;
+        this.hora = hora;
     }
 }
