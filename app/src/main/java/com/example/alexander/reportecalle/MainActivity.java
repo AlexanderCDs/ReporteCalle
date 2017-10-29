@@ -8,6 +8,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private TextView textView;
 
+    private static final String TAG = "MainActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +42,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnToken.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                msg(FirebaseInstanceId.getInstance().getToken().toString());
+                String token = FirebaseInstanceId.getInstance().getToken().toString();
+                Log.d(TAG,"Token : " + token);
+                msg(token);
             }
         });
     }
