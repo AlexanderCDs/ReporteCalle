@@ -1,7 +1,10 @@
 package com.example.alexander.reportecalle;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +17,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.io.IOException;
 
@@ -31,7 +35,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         inicializar();
-
+        Button btnToken = (Button) findViewById(R.id.btnToken);
+        btnToken.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                msg(FirebaseInstanceId.getInstance().getToken().toString());
+            }
+        });
     }
 
     public void inicializar()

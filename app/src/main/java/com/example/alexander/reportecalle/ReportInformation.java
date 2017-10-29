@@ -13,6 +13,7 @@ public class ReportInformation
     public String estado;
     public String fecha;
     public String hora;
+    public String token;
 
     public ReportInformation()
     {
@@ -23,9 +24,10 @@ public class ReportInformation
         this.estado = "";
         this.fecha = "";
         this.hora = "";
+        this.token = "";
     }
 
-    public ReportInformation(String correo, String direccion, String comentario, String image, String estado, String fecha, String hora) {
+    public ReportInformation(String correo, String direccion, String comentario, String image, String estado, String fecha, String hora, String token) {
         this.correo = correo;
         this.direccion = direccion;
         this.comentario = comentario;
@@ -33,5 +35,6 @@ public class ReportInformation
         this.estado = estado;
         this.fecha = fecha;
         this.hora = hora;
+        this.token = token;
     }
 }

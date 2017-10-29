@@ -43,6 +43,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -180,7 +181,7 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
         String hora = ((hoy.hour < 10) ? "0" + hoy.hour : hoy.hour)+ ":" + ((hoy.minute < 10) ? "0" + hoy.minute : hoy.minute) + ":" + ((hoy.second < 10) ? hoy.second + "0" : hoy.second);
 
 
-        ReportInformation rinformation = new ReportInformation(user.getEmail(), address.trim(), edtComentario.getText().toString().trim(), photo, getResources().getString(R.string.txt_msg_pendiente), fecha, hora);
+        ReportInformation rinformation = new ReportInformation(user.getEmail(), address.trim(), edtComentario.getText().toString().trim(), photo, getResources().getString(R.string.txt_msg_nuevo), fecha, hora, FirebaseInstanceId.getInstance().getToken().toString());
         reportesReference.child("reporte").push().setValue(rinformation);
 
         StorageReference fillPath = storage.child("reporte").child("foto").child(photo);

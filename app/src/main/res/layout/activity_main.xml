@@ -9,6 +9,7 @@
     tools:context="com.example.alexander.reportecalle.MainActivity">
 
     <LinearLayout
+        android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -21,13 +22,11 @@
             android:textSize="25dp"
             android:textAlignment="center"/>
 
-        <TextView
+        <Button
+            android:id="@+id/btnToken"
+            android:text="Get Token"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Indormación"
-            android:id="@+id/ttvInformation"
-            android:textSize="25dp"
-            android:textAlignment="center"/>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 </ScrollView>

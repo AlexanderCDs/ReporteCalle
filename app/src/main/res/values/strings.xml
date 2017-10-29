@@ -39,5 +39,13 @@
     <string name="txt_mi_ubicacion">Mi ubicación</string>
     <string name="txt_msg_pendiente">Pendiente</string>
     <string name="txt_guardando">Generando reporte</string>
+    <string name="txt_msg_nuevo">Nuevo</string>
+
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <!--
+        This is the name that users will see when interacting with this channel.
+        It should describe the category of notifications that will be sent through this channel
+     -->
+    <string name="default_notification_channel_name" translatable="true">News</string>
 
 </resources>
