@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -89,27 +90,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
 
+        listaReportesUsuario.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Intent intent = new Intent(getApplicationContext(), ReporteActivity.class);
+                intent.putExtra("folio", listaReportes.get(i).get(TAG_ID).toString().replace("Folio: ", ""));
+                startActivity(intent);
+
+            }
+        });
     }
 
     @Override
     protected void onStart(){
         super.onStart();
 
-        repRef.addValueEventListener(new ValueEventListener() {
+        repRef.orderByValue().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseUser user = mAuth.getCurrentUser();
+                listaReportes.clear();
                 //For para recorrer cada dato de la base de datos de firebase
                 for (DataSnapshot reporteSnapshot : dataSnapshot.getChildren()){
                     //ReportInformation reporte = reporteSnapshot.getValue(ReportInformation.class);
                     if(reporteSnapshot.child(TAG_CORREO).getValue().equals(user.getEmail().toString()))
                     {
                         HashMap map = new HashMap();
-                        map.put(TAG_ID, reporteSnapshot.child(TAG_ID).getValue());
-                        map.put(TAG_ESTADO, reporteSnapshot.child(TAG_ESTADO).getValue());
-                        map.put(TAG_FECHA, reporteSnapshot.child(TAG_FECHA).getValue());
-                        map.put(TAG_HORA, reporteSnapshot.child(TAG_HORA).getValue());
-                        listaReportes.add(map);
+                        map.put(TAG_ID, getResources().getString(R.string.folio)+ " " + reporteSnapshot.child(TAG_ID).getValue());
+                        map.put(TAG_ESTADO, getResources().getString(R.string.estado)+ " " + reporteSnapshot.child(TAG_ESTADO).getValue());
+                        map.put(TAG_FECHA, getResources().getString(R.string.fecha)+ " " + reporteSnapshot.child(TAG_FECHA).getValue());
+                        map.put(TAG_HORA, getResources().getString(R.string.hora)+ " " + reporteSnapshot.child(TAG_HORA).getValue());
+                        listaReportes.add(0,map);
                     }
                 }
                 listaReportesUsuario.setAdapter(getAdapter(MainActivity.this));

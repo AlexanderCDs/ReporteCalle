@@ -47,5 +47,11 @@
         It should describe the category of notifications that will be sent through this channel
      -->
     <string name="default_notification_channel_name" translatable="true">News</string>
+    <string name="folio">Folio:</string>
+    <string name="estado">Estado:</string>
+    <string name="fecha">Fecha:</string>
+    <string name="hora">Hora:</string>
+    <string name="direccion">Dirección:</string>
+    <string name="comentario">Comentario:</string>
 
 </resources>
