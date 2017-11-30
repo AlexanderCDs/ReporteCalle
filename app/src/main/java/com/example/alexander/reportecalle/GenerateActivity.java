@@ -47,6 +47,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -62,7 +63,7 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
     private FirebaseAuth.AuthStateListener mAuthListener;
     ReportInformation rinformation;
     String image = "";
-    String ultimoCliente = "";
+    public String id_reporte = "";
     private EditText edtComentario;
     private Button btnGuardarReporte, btnCancelarReporte;
     private ImageButton imgBtnReporte;
@@ -192,8 +193,41 @@ final String url = "";
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 image = taskSnapshot.getDownloadUrl().toString();
-                rinformation = new ReportInformation(user.getEmail(), address.trim(), edtComentario.getText().toString().trim(), image, getResources().getString(R.string.txt_msg_nuevo), fecha, hora, FirebaseInstanceId.getInstance().getToken().toString());
-                reportesReference.push().setValue(rinformation);
+                final FirebaseDatabase db = FirebaseDatabase.getInstance();
+                DatabaseReference repRef = db.getReference("reportes");
+
+                repRef.limitToLast(1).addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        try {
+                            id_reporte = String.valueOf(Integer.valueOf(dataSnapshot.getKey())+1);
+                            rinformation = new ReportInformation(id_reporte, user.getEmail(), address.trim(), edtComentario.getText().toString().trim(), image, getResources().getString(R.string.txt_msg_nuevo), fecha, hora, FirebaseInstanceId.getInstance().getToken().toString());
+                            reportesReference.child(id_reporte).setValue(rinformation);
+                        }catch (Exception e){}
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
                 msg("Acción exitosa. ¡Datos guardados!");
             }
         });

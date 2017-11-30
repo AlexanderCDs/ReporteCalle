@@ -1,0 +1,62 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_margin="8dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/circleView"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@mipmap/ic_launcher"
+        android:layout_marginStart="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/ttvFolioReporte"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Folio"
+        android:layout_alignTop="@+id/circleView"
+        android:layout_toRightOf="@+id/circleView"
+        android:layout_marginTop="1dp"
+        android:layout_marginLeft="18dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_toEndOf="@+id/circleView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fecha"
+        android:id="@+id/ttvFechaReporte"
+        android:textSize="12sp"
+        android:layout_marginTop="2dp"
+        android:layout_below="@+id/ttvFolioReporte"
+        android:layout_alignLeft="@+id/ttvFolioReporte"
+        android:layout_alignStart="@+id/ttvFolioReporte" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hora"
+        android:id="@+id/ttvHoraReporte"
+        android:textSize="12sp"
+        android:layout_marginTop="2dp"
+        android:layout_below="@+id/ttvFechaReporte"
+        android:layout_alignLeft="@+id/ttvFechaReporte"
+        android:layout_alignStart="@+id/ttvFechaReporte" />
+
+    <TextView
+        android:id="@+id/ttvEstadoReporte"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/ttvFechaReporte"
+        android:layout_marginEnd="18dp"
+        android:text="Estado"
+        android:textSize="12sp" />
+
+</RelativeLayout>

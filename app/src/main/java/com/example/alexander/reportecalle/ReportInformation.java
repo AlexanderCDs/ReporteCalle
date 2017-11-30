@@ -6,6 +6,7 @@ package com.example.alexander.reportecalle;
 
 public class ReportInformation
 {
+    public String id;
     public String correo;
     public String direccion;
     public String comentario;
@@ -15,19 +16,9 @@ public class ReportInformation
     public String hora;
     public String token;
 
-    public ReportInformation()
+    public ReportInformation(String id, String correo, String direccion, String comentario, String image, String estado, String fecha, String hora, String token)
     {
-        this.correo = "";
-        this.direccion = "";
-        this.comentario = "";
-        this.image = "";
-        this.estado = "";
-        this.fecha = "";
-        this.hora = "";
-        this.token = "";
-    }
-
-    public ReportInformation(String correo, String direccion, String comentario, String image, String estado, String fecha, String hora, String token) {
+        this.id = id;
         this.correo = correo;
         this.direccion = direccion;
         this.comentario = comentario;
@@ -36,5 +27,25 @@ public class ReportInformation
         this.fecha = fecha;
         this.hora = hora;
         this.token = token;
+    }
+
+    public ReportInformation()
+    {
+        super();
+    }
+
+    @Override
+    public String toString() {
+        return "[" +
+                "\nId: " + this.id +
+                "\nCorreo: " + this.correo +
+                "\nDirección: " + this.direccion +
+                "\nComentario: " + this.comentario +
+                "\nImagen: " + this.image +
+                "\nEstado: " + this.estado +
+                "\nFecha: " + this.fecha +
+                "\nHora: " + this.hora +
+                "\nToken: " + this.token +
+                "\n]";
     }
 }
