@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -41,6 +42,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -56,7 +60,9 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
 {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-
+    ReportInformation rinformation;
+    String image = "";
+    String ultimoCliente = "";
     private EditText edtComentario;
     private Button btnGuardarReporte, btnCancelarReporte;
     private ImageButton imgBtnReporte;
@@ -70,7 +76,6 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
     private Uri selectedImage;
     private StorageReference storage;
 
-    private ProgressDialog pDialog;
 
     private Integer REQUEST_CAMERA = 100, SELECT_FILE = 0;
 
@@ -169,28 +174,30 @@ public class GenerateActivity extends AppCompatActivity implements View.OnClickL
         }
         return false;
     }
-
+final String url = "";
     private void guardarInformacion()
     {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        final DatabaseReference reportesReference = database.getReference("basedatos");
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        final FirebaseUser user = mAuth.getCurrentUser();
+        final DatabaseReference reportesReference = database.getReference("reportes");
         Time hoy = new Time(Time.getCurrentTimezone());
+
         hoy.setToNow();
-        String fecha = ((hoy.monthDay < 10) ? "0" + hoy.monthDay : hoy.monthDay)+ "/" + (((hoy.month+1) < 10) ? "0" + (hoy.month+1) : (hoy.month+1)) + "/" + hoy.year;
-        String hora = ((hoy.hour < 10) ? "0" + hoy.hour : hoy.hour)+ ":" + ((hoy.minute < 10) ? "0" + hoy.minute : hoy.minute) + ":" + ((hoy.second < 10) ? hoy.second + "0" : hoy.second);
+        final String fecha = hoy.year + "-" + (((hoy.month+1) < 10) ? "0" + (hoy.month+1) : (hoy.month+1)) + "-" + ((hoy.monthDay < 10) ? "0" + hoy.monthDay : hoy.monthDay);
+        final String hora = ((hoy.hour < 10) ? "0" + hoy.hour : hoy.hour)+ ":" + ((hoy.minute < 10) ? "0" + hoy.minute : hoy.minute) + ":" + ((hoy.second < 10) ? hoy.second + "0" : hoy.second);
 
-
-        ReportInformation rinformation = new ReportInformation(user.getEmail(), address.trim(), edtComentario.getText().toString().trim(), photo, getResources().getString(R.string.txt_msg_nuevo), fecha, hora, FirebaseInstanceId.getInstance().getToken().toString());
-        reportesReference.child("reporte").push().setValue(rinformation);
-
-        StorageReference fillPath = storage.child("reporte").child("foto").child(photo);
+        final StorageReference fillPath = storage.child("reporte").child(photo);
         fillPath.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                image = taskSnapshot.getDownloadUrl().toString();
+                rinformation = new ReportInformation(user.getEmail(), address.trim(), edtComentario.getText().toString().trim(), image, getResources().getString(R.string.txt_msg_nuevo), fecha, hora, FirebaseInstanceId.getInstance().getToken().toString());
+                reportesReference.push().setValue(rinformation);
                 msg("Acción exitosa. ¡Datos guardados!");
             }
         });
+
     }
     public void msg (String msg)
     {
